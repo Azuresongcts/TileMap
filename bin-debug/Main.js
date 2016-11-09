@@ -132,7 +132,7 @@ var Main = (function (_super) {
             };
             stopidleanime();
         };
-        var startState1 = function () {
+        var startState = function () {
             var startMove = function () {
                 playerStage.addChild(playermove01);
                 playerStage.addChild(playermove02);
@@ -158,17 +158,17 @@ var Main = (function (_super) {
                 anime01.call(startMove, self);
             };
             var humanMove = function () {
-                var playerpointX;
-                var playerpointY;
-                var speed;
-                speed = 1; //设置速度
+                var playerPointX;
+                var playerPointY;
+                var humanSpeed;
+                humanSpeed = 0.5; //设置速度
                 var anime01 = egret.Tween.get(playerStage); //开始移动
                 var anime02 = egret.Tween.get(playerStage);
                 //var anime03 = egret.Tween.get(this);
-                playerpointX = playerStage.x;
-                playerpointY = playerStage.y;
-                var distance = Math.sqrt(Math.pow((playerpointX - targetpointX), 2) + Math.pow((playerpointY - targetpointY), 2));
-                var time = distance / speed * 2;
+                playerPointX = playerStage.x;
+                playerPointY = playerStage.y;
+                var distance = Math.sqrt(Math.pow((playerPointX - targetpointX), 2) + Math.pow((playerPointY - targetpointY), 2));
+                var time = distance / humanSpeed * 2;
                 anime01.to({ "x": targetpointX }, time);
                 anime02.to({ "y": targetpointY }, time);
                 //anime03.wait(time);
@@ -187,7 +187,7 @@ var Main = (function (_super) {
             stopMove();
         };
         var playeridleState = new PlayerState(startState0, stopState0); //三个状态的初始化
-        var playermoveState = new PlayerState(startState1, stopState1);
+        var playermoveState = new PlayerState(startState, stopState1);
         var currentState = playeridleState;
         function notetouchpos(e) {
             //targetpointX = e.stageX;
@@ -212,24 +212,24 @@ var Main = (function (_super) {
             reachtarget = false;
             //reachend = false;
             sign = 1;
-            checkState();
+            stateCheck();
         }
-        var checkState = function () {
+        var stateCheck = function () {
             switch (sign) {
                 case 0:
-                    changeState(playeridleState);
+                    stateChange(playeridleState);
                     break;
                 case 1:
-                    changeState(playermoveState);
+                    stateChange(playermoveState);
                     break;
             }
         };
-        var changeState = function (nextState) {
+        var stateChange = function (nextState) {
             currentState.onExit();
             currentState = nextState;
             currentState.onEnter();
         };
-        changeState(playeridleState); //生成人物，放在初始位置
+        stateChange(playeridleState);
         this.addEventListener(egret.TouchEvent.TOUCH_TAP, notetouchpos, this);
         var changeTarget = function () {
             if (playerStage.x == targetpointX && playerStage.y == targetpointY) {
@@ -238,13 +238,13 @@ var Main = (function (_super) {
                     targetpointX = path[indexofpath].x * 64;
                     targetpointY = path[indexofpath].y * 64;
                     sign = 1;
-                    checkState();
+                    stateCheck();
                 }
                 else {
                     path = [];
                     indexofpath = 0;
                     sign = 0;
-                    checkState();
+                    stateCheck();
                 }
             }
         };

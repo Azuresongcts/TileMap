@@ -9,7 +9,7 @@ var game_file_list = [
 	"libs/modules/res/res.js",
 	"libs/modules/tween/tween.js",
 	"bin-debug/Animation.js",
-	"bin-debug/Findway.js",
+	"bin-debug/FindWay.js",
 	"bin-debug/GameMap.js",
 	"bin-debug/LoadingUI.js",
 	"bin-debug/Main.js",

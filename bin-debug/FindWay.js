@@ -179,4 +179,4 @@ var AStar = (function () {
     return AStar;
 }());
 egret.registerClass(AStar,'AStar');
-//# sourceMappingURL=Findway.js.map
+//# sourceMappingURL=FindWay.js.map

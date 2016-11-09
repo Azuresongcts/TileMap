@@ -180,7 +180,7 @@ class Main extends egret.DisplayObjectContainer {
 
         }
 
-        var startState1: Function = function () {
+        var startState: Function = function () {
 
             var startMove: Function = function () {
 
@@ -230,21 +230,21 @@ class Main extends egret.DisplayObjectContainer {
             var humanMove: Function = function () {
 
 
-                var playerpointX: number;
-                var playerpointY: number;
-                var speed: number;
+                var playerPointX: number;
+                var playerPointY: number;
+                var humanSpeed: number;
 
-                speed = 1;   //设置速度
+                humanSpeed = 0.5;   //设置速度
 
                 var anime01 = egret.Tween.get(playerStage);     //开始移动
                 var anime02 = egret.Tween.get(playerStage);
                 //var anime03 = egret.Tween.get(this);
 
-                playerpointX = playerStage.x;
-                playerpointY = playerStage.y;
+                playerPointX = playerStage.x;
+                playerPointY = playerStage.y;
 
-                var distance: number = Math.sqrt(Math.pow((playerpointX - targetpointX), 2) + Math.pow((playerpointY - targetpointY), 2));
-                var time = distance / speed * 2;
+                var distance: number = Math.sqrt(Math.pow((playerPointX - targetpointX), 2) + Math.pow((playerPointY - targetpointY), 2));
+                var time = distance / humanSpeed * 2;
 
                 anime01.to({ "x": targetpointX }, time);
                 anime02.to({ "y": targetpointY }, time);
@@ -278,7 +278,7 @@ class Main extends egret.DisplayObjectContainer {
 
         var playeridleState = new PlayerState(startState0, stopState0);   //三个状态的初始化
 
-        var playermoveState = new PlayerState(startState1, stopState1);
+        var playermoveState = new PlayerState(startState, stopState1);
 
         var currentState = playeridleState;
 
@@ -321,29 +321,29 @@ class Main extends egret.DisplayObjectContainer {
             reachtarget = false;
             //reachend = false;
             sign = 1;
-            checkState();
+            stateCheck();
 
         }
 
-        var checkState: Function = function () {                  //状态检测函数
+        var stateCheck: Function = function () {
 
             switch (sign) {
 
                 case 0:
 
-                    changeState(playeridleState);
+                    stateChange(playeridleState);
                     break;
 
                 case 1:
 
-                    changeState(playermoveState);
+                    stateChange(playermoveState);
                     break;
 
             }
 
         }
 
-        var changeState: Function = function (nextState: State) {  //状态改变函数
+        var stateChange: Function = function (nextState: State) {  //状态改变函数
 
             currentState.onExit();
 
@@ -357,7 +357,7 @@ class Main extends egret.DisplayObjectContainer {
 
 
 
-        changeState(playeridleState);  //生成人物，放在初始位置
+        stateChange(playeridleState);
         this.addEventListener(egret.TouchEvent.TOUCH_TAP, notetouchpos, this);
 
 
@@ -371,13 +371,13 @@ class Main extends egret.DisplayObjectContainer {
                     targetpointX = path[indexofpath].x * 64;
                     targetpointY = path[indexofpath].y * 64;
                     sign = 1;
-                    checkState();
+                    stateCheck();
                 } else {
 
                     path = [];
                     indexofpath = 0;
                     sign = 0;
-                    checkState();
+                    stateCheck();
                 }
 
             }

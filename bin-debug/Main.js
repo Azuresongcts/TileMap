@@ -77,9 +77,6 @@ var Main = (function (_super) {
         this.touchEnabled = true;
         this.map = new GameMap();
         this.addChild(this.map);
-        //this.player = new Player();
-        //this.addChild(this.player);
-        //this.stage.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
         var startx = 0;
         var starty = 0;
         var endx = 0;
@@ -103,12 +100,8 @@ var Main = (function (_super) {
         playerStage.width = this.stage.stageWidth;
         playerStage.height = this.stage.stageHeight;
         this.addChild(playerStage);
-        //var startpointX = -210;
-        //var startpointY = -100;
         var startpointX = 0;
         var startpointY = 0;
-        //playerStage.anchorOffsetX = 60;
-        //playerStage.anchorOffsetY = 70;
         var targetpointX;
         var targetpointY;
         var sign;
@@ -140,7 +133,7 @@ var Main = (function (_super) {
             stopidleanime();
         };
         var startState1 = function () {
-            var startmoveanime = function () {
+            var startMove = function () {
                 playerStage.addChild(playermove01);
                 playerStage.addChild(playermove02);
                 playerStage.addChild(playermove03);
@@ -162,9 +155,9 @@ var Main = (function (_super) {
                 anime01.to({ "alpha": 0 }, 0);
                 anime02.to({ "alpha": 0 }, 0);
                 anime03.to({ "alpha": 1 }, 0);
-                anime01.call(startmoveanime, self);
+                anime01.call(startMove, self);
             };
-            var startmove = function () {
+            var humanMove = function () {
                 var playerpointX;
                 var playerpointY;
                 var speed;
@@ -181,17 +174,17 @@ var Main = (function (_super) {
                 //anime03.wait(time);
                 anime01.call(changeTarget);
             };
-            startmoveanime();
-            startmove();
+            startMove();
+            humanMove();
         };
         var stopState1 = function () {
-            var stopmoveanime = function () {
+            var stopMove = function () {
                 playermove01.alpha = 0;
                 playermove02.alpha = 0;
                 playermove03.alpha = 0;
                 egret.Tween.removeAllTweens();
             };
-            stopmoveanime();
+            stopMove();
         };
         var playeridleState = new PlayerState(startState0, stopState0); //三个状态的初始化
         var playermoveState = new PlayerState(startState1, stopState1);
@@ -240,18 +233,10 @@ var Main = (function (_super) {
         this.addEventListener(egret.TouchEvent.TOUCH_TAP, notetouchpos, this);
         var changeTarget = function () {
             if (playerStage.x == targetpointX && playerStage.y == targetpointY) {
-                //console.log("changeTarget");
                 indexofpath++;
                 if (indexofpath < path.length) {
                     targetpointX = path[indexofpath].x * 64;
                     targetpointY = path[indexofpath].y * 64;
-                    //console.log("index:"+ indexofpath +"\n");
-                    //console.log("path["+ indexofpath + "].x:" + path[indexofpath].x +"\n");
-                    //console.log("path["+ indexofpath + "].y:" + path[indexofpath].y +"\n");
-                    //console.log("size:" + this.tilesize + "\n");
-                    //console.log("targetx(pro):" +path[indexofpath].x * this.tilesize + "\n");
-                    //console.log("targety(pro):" +path[indexofpath].y * this.tilesize + "\n");         
-                    //console.log("targetx:" + targetpointX + " targety:"+ targetpointY + "\n");
                     sign = 1;
                     checkState();
                 }
@@ -264,30 +249,6 @@ var Main = (function (_super) {
             }
         };
     };
-    /*
-        private onTap(event: egret.TouchEvent) {
-    
-            var startx = Math.floor(this.player.x/this.tilesize);
-            var starty = Math.floor(this.player.y/this.tilesize);
-            var endx = Math.floor(event.stageX/this.tilesize);
-            var endy = Math.floor(event.stageY/this.tilesize);
-            
-            this.grid.setStartNode(startx,starty);
-            this.grid.setEndNode(endx,endy);
-    
-            var astar = new AStar();
-            astar.findPath(this.grid);
-    
-            var path = astar.getpath();
-    
-            for(var i = 0; i < path.length; i++){
-    
-                this.player.Move(new Vector2D(path[i].x,path[i].y));
-            }
-    
-    
-        }
-    */
     p.createBitmapByName = function (name) {
         var result = new egret.Bitmap();
         var texture = RES.getRes(name);
